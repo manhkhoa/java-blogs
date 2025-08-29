@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: javablogs-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: javablogs
+      MYSQL_USER: javablogs_user
+      MYSQL_PASSWORD: javablogs_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - javablogs-network
+
+  javablogs:
+    build: .
+    container_name: javablogs-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/javablogs?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: javablogs_user
+      SPRING_DATASOURCE_PASSWORD: javablogs_password
+    depends_on:
+      - mysql
+    networks:
+      - javablogs-network
+
+volumes:
+  mysql_data:
+
+networks:
+  javablogs-network:
+    driver: bridge
+
