@@ -1,0 +1,15 @@
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/config/SecurityConfig.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/controller/LoginController.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/service/UserService.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/service/CustomUserDetailsService.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/controller/UserController.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/service/BlogPostService.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/controller/HomeController.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/entity/BlogPost.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/controller/AdminController.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/config/DataInitializer.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/repository/UserRepository.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/entity/User.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/entity/Role.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/JavaBlogsApplication.java
+/Users/khoatm/Desktop/Projects/java-blogs/src/main/java/com/example/javablogs/repository/BlogPostRepository.java

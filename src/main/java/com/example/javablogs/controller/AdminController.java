@@ -5,9 +5,12 @@ import com.example.javablogs.entity.User;
 import com.example.javablogs.service.BlogPostService;
 import com.example.javablogs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -49,8 +52,13 @@ public class AdminController {
     }
     
     @PostMapping("/users")
-    public String createUser(@ModelAttribute User user) {
-        userService.createUser(user);
+    public String createUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        try {
+            userService.createUser(user);
+            redirectAttributes.addFlashAttribute("success", "User created successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error creating user: " + e.getMessage());
+        }
         return "redirect:/admin/users";
     }
     
@@ -63,14 +71,24 @@ public class AdminController {
     }
     
     @PostMapping("/users/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
-        userService.updateUser(id, user);
+    public String updateUser(@PathVariable Long id, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        try {
+            userService.updateUser(id, user);
+            redirectAttributes.addFlashAttribute("success", "User updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating user: " + e.getMessage());
+        }
         return "redirect:/admin/users";
     }
     
     @PostMapping("/users/{id}/delete")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.deleteUser(id);
+            redirectAttributes.addFlashAttribute("success", "User deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deleting user: " + e.getMessage());
+        }
         return "redirect:/admin/users";
     }
     
@@ -89,10 +107,19 @@ public class AdminController {
     }
     
     @PostMapping("/posts")
-    public String createPost(@ModelAttribute BlogPost blogPost) {
-        // For admin, we'll set a default author or get from session
-        // This is simplified - in real app, get current user from security context
-        blogPostService.createBlogPost(blogPost, null);
+    public String createPost(@ModelAttribute BlogPost blogPost, RedirectAttributes redirectAttributes) {
+        try {
+            // Get current authenticated user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            User currentUser = userService.getUserByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("Current user not found"));
+            
+            blogPostService.createBlogPost(blogPost, currentUser);
+            redirectAttributes.addFlashAttribute("success", "Blog post created successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error creating blog post: " + e.getMessage());
+        }
         return "redirect:/admin/posts";
     }
     
@@ -105,14 +132,24 @@ public class AdminController {
     }
     
     @PostMapping("/posts/{id}")
-    public String updatePost(@PathVariable Long id, @ModelAttribute BlogPost blogPost) {
-        blogPostService.updateBlogPost(id, blogPost);
+    public String updatePost(@PathVariable Long id, @ModelAttribute BlogPost blogPost, RedirectAttributes redirectAttributes) {
+        try {
+            blogPostService.updateBlogPost(id, blogPost);
+            redirectAttributes.addFlashAttribute("success", "Blog post updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating blog post: " + e.getMessage());
+        }
         return "redirect:/admin/posts";
     }
     
     @PostMapping("/posts/{id}/delete")
-    public String deletePost(@PathVariable Long id) {
-        blogPostService.deleteBlogPost(id);
+    public String deletePost(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            blogPostService.deleteBlogPost(id);
+            redirectAttributes.addFlashAttribute("success", "Blog post deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deleting blog post: " + e.getMessage());
+        }
         return "redirect:/admin/posts";
     }
 }
